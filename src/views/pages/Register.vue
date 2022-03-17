@@ -23,24 +23,14 @@
           </router-link>
         </v-card-title>
 
-        <!-- title -->
-        <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Adventure starts here 🚀
-          </p>
-          <p class="mb-2">
-            Make your app management easy and fun!
-          </p>
-        </v-card-text>
-
         <!-- login form -->
         <v-card-text>
-          <v-form>
+          <v-form @submit="createCompany">
             <v-text-field
-              v-model="username"
+              v-model="companyName"
               outlined
-              label="Username"
-              placeholder="JohnDoe"
+              label="Nome da empresa"
+              placeholder="AutoCenter Top"
               hide-details
               class="mb-3"
             ></v-text-field>
@@ -55,33 +45,50 @@
             ></v-text-field>
 
             <v-text-field
+              v-model="phone"
+              outlined
+              label="Telefone"
+              placeholder="11 1234 1234"
+              hide-details
+              class="mb-3"
+            ></v-text-field>
+
+            <v-text-field
+              v-model="name"
+              outlined
+              label="Seu nome"
+              placeholder="Meu Nome"
+              hide-details
+              class="mb-3"
+            ></v-text-field>
+
+            <v-text-field
+              v-model="login"
+              outlined
+              label="Login"
+              placeholder="meu.nome"
+              hide-details
+              class="mb-3"
+            ></v-text-field>
+
+            <v-text-field
               v-model="password"
               outlined
               :type="isPasswordVisible ? 'text' : 'password'"
-              label="Password"
+              label="Senha"
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
               hide-details
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
 
-            <v-checkbox
-              hide-details
-              class="mt-1"
-            >
-              <template #label>
-                <div class="d-flex align-center flex-wrap">
-                  <span class="me-2">I agree to</span><a href="javascript:void(0)">privacy policy &amp; terms</a>
-                </div>
-              </template>
-            </v-checkbox>
-
             <v-btn
+              type="submit"
               block
               color="primary"
               class="mt-6"
             >
-              Sign Up
+              Cadastrar
             </v-btn>
           </v-form>
         </v-card-text>
@@ -89,33 +96,12 @@
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
           <span class="me-2">
-            Already have an account?
+            Já possui uma conta?
           </span>
           <router-link :to="{ name:'pages-login' }">
-            Sign in instead
+            Entrar
           </router-link>
         </v-card-text>
-
-        <!-- divider -->
-        <v-card-text class="d-flex align-center mt-2">
-          <v-divider></v-divider>
-          <span class="mx-5">or</span>
-          <v-divider></v-divider>
-        </v-card-text>
-
-        <!-- social link -->
-        <v-card-actions class="d-flex justify-center">
-          <v-btn
-            v-for="link in socialLink"
-            :key="link.icon"
-            icon
-            class="ms-1"
-          >
-            <v-icon :color="$vuetify.theme.dark ? link.colorInDark:link.color">
-              {{ link.icon }}
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </div>
 
@@ -146,50 +132,114 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import { mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-import { ref } from '@vue/composition-api'
+import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
+import router from '@/router'
 
 export default {
-  setup() {
-    const isPasswordVisible = ref(false)
-    const username = ref('')
-    const email = ref('')
-    const password = ref('')
-    const socialLink = [
-      {
-        icon: mdiFacebook,
-        color: '#4267b2',
-        colorInDark: '#4267b2',
-      },
-      {
-        icon: mdiTwitter,
-        color: '#1da1f2',
-        colorInDark: '#1da1f2',
-      },
-      {
-        icon: mdiGithub,
-        color: '#272727',
-        colorInDark: '#fff',
-      },
-      {
-        icon: mdiGoogle,
-        color: '#db4437',
-        colorInDark: '#db4437',
-      },
-    ]
-
+  data() {
     return {
-      isPasswordVisible,
-      username,
-      email,
-      password,
-      socialLink,
+      companyName: null,
+      email: null,
+      phone: null,
+      name: null,
+      login: null,
+      password: null,
+      company_id: null,
+      isPasswordVisible: false,
 
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
       },
     }
+  },
+  methods: {
+    async createCompany(e) {
+      e.preventDefault()
+
+      const dataCompany = {
+        companyName: this.companyName,
+        email: this.email,
+        phone: this.phone,
+      }
+
+      const user = {
+        login: this.login,
+        email: this.email,
+        phone: this.phone,
+      }
+
+      const userJson = JSON.stringify(user)
+      let userExist = null
+      await fetch('http://localhost:5000/user/getuseremailoginphone', {
+        method: 'POST',
+        headers: { 'content-Type': 'application/json' },
+        body: userJson,
+      }).then(response => response.json().then(data => ({
+        data,
+        status: response.status,
+      })).then(res => {
+        console.log(res.status, res.data.user)
+        userExist = res.data.user
+      }))
+      console.log(userExist)
+      if (userExist !== null) {
+        console.log('existe um usuário cadastrado')
+        // eslint-disable-next-line newline-before-return
+        return
+      }
+
+      if (!this.companyName || !this.email || !this.phone) {
+        console.log('preencha todos os dados')
+      } else {
+        const dataJson = JSON.stringify(dataCompany)
+        const req = await fetch('http://localhost:5000/company/create', {
+          method: 'POST',
+          headers: { 'content-Type': 'application/json' },
+          body: dataJson,
+        }).then(response => response.json().then(data => ({
+          data,
+          status: response.status,
+        })).then(res => {
+          if (res.status === 422) {
+            console.log(res.data.message)
+          } else {
+            // console.log(res.status, res.data.body._id)
+            // eslint-disable-next-line no-underscore-dangle
+            const companyId = res.data.body._id
+            this.createUser(companyId)
+            router.push({name: 'pages-login'})
+          }
+        }))
+      }
+    },
+    async createUser(companyId) {
+      console.log('create user')
+
+      const user = {
+        name: this.name,
+        email: this.email,
+        login: this.login,
+        phone: this.phone,
+        whatsapp: this.whatsapp,
+        companyId,
+        password: this.password,
+        master: true,
+      }
+
+      const userJson = JSON.stringify(user)
+
+      await fetch('http://localhost:5000/user/create', {
+        method: 'POST',
+        headers: { 'content-Type': 'application/json' },
+        body: userJson,
+      }).then(response => response.json().then(data => ({
+        data,
+        status: response.status,
+      })).then(res => {
+        console.log(res.status, res.data.body)
+      }))
+    },
   },
 }
 </script>

@@ -25,11 +25,8 @@
 
         <!-- title -->
         <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Welcome to Materio! 👋🏻
-          </p>
           <p class="mb-2">
-            Please sign-in to your account and start the adventure
+            Entre com seu login ou e-mail
           </p>
         </v-card-text>
 
@@ -94,14 +91,14 @@
         </v-card-text>
 
         <!-- divider -->
-        <v-card-text class="d-flex align-center mt-2">
+        <!-- <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
           <span class="mx-5">or</span>
           <v-divider></v-divider>
-        </v-card-text>
+        </v-card-text> -->
 
         <!-- social links -->
-        <v-card-actions class="d-flex justify-center">
+        <!-- <v-card-actions class="d-flex justify-center">
           <v-btn
             v-for="link in socialLink"
             :key="link.icon"
@@ -112,7 +109,7 @@
               {{ link.icon }}
             </v-icon>
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </div>
 
