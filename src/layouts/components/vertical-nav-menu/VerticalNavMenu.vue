@@ -25,7 +25,7 @@
         ></v-img>
         <v-slide-x-transition>
           <h2 class="app-title text--primary">
-            MATERIO
+            SysAutoCenter
           </h2>
         </v-slide-x-transition>
       </router-link>
@@ -47,26 +47,16 @@
         :to="{ name: 'pages-account-settings'}"
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
-      <nav-menu-group
-        title="Pages"
-        :icon="icons.mdiFileOutline"
-      >
-        <nav-menu-link
-          title="Login"
-          :to="{ name: 'pages-login' }"
-          target="_blank"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Register"
-          :to="{ name: 'pages-register' }"
-          target="_blank"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Error"
-          :to="{ name: 'error-404' }"
-          target="_blank"
-        ></nav-menu-link>
-      </nav-menu-group>
+      <nav-menu-link
+        title="Clients"
+        :to="{ name: 'clients'}"
+        :icon="icons.mdiAccount"
+      ></nav-menu-link>
+      <nav-menu-link
+        title="vehicles"
+        :to="{ name: 'vehicles'}"
+        :icon="icons.mdiCarBack"
+      ></nav-menu-link>
       <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title>
       <nav-menu-link
         title="Typography"
@@ -108,15 +98,15 @@ import {
   mdiFileOutline,
   mdiFormSelect,
   mdiAccountCogOutline,
+  mdiCarBack,
+  mdiAccount,
 } from '@mdi/js'
 import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
-import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 
 export default {
   components: {
     NavMenuSectionTitle,
-    NavMenuGroup,
     NavMenuLink,
   },
   props: {
@@ -136,6 +126,8 @@ export default {
         mdiFileOutline,
         mdiFormSelect,
         mdiAccountCogOutline,
+        mdiCarBack,
+        mdiAccount,
       },
     }
   },

@@ -49,7 +49,41 @@ const routes = [
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/pages/login')
+      } else {
+        next()
+      }
+    },
     component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
+  },
+  {
+    path: '/clients',
+    name: 'clients',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/pages/login')
+      } else {
+        next()
+      }
+    },
+    component: () => import('@/views/clients/Clients.vue'),
+  },
+  {
+    path: '/vehicles',
+    name: 'vehicles',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/pages/login')
+      } else {
+        next()
+      }
+    },
+    component: () => import('@/views/vehicles/Vehicles.vue'),
   },
   {
     path: '/pages/login',
