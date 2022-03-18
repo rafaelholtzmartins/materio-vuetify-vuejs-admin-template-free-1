@@ -139,14 +139,14 @@
       <v-divider class="my-2"></v-divider>
 
       <!-- Logout -->
-      <v-list-item link>
+      <v-list-item link @click="logout">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiLogoutVariant }}
           </v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Logout</v-list-item-title>
+          <v-list-item-title>Sair</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -164,6 +164,7 @@ import {
   mdiHelpCircleOutline,
   mdiLogoutVariant,
 } from '@mdi/js'
+import logout from '@/utils/logout';
 
 export default {
   setup() {
@@ -179,6 +180,11 @@ export default {
         mdiLogoutVariant,
       },
     }
+  },
+  methods: {
+    async logout() {
+      logout()
+    },
   },
 }
 </script>

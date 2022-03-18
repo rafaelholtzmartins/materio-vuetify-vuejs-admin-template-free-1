@@ -1,88 +1,66 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import beforeEnter from '@/utils/CheckIfToken'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: 'dashboard',
+    redirect: 'pages-login',
   },
   {
     path: '/dashboard',
     name: 'dashboard',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        next('/pages/login')
-      } else {
-        next()
-      }
-    },
+    beforeEnter,
     component: () => import('@/views/dashboard/Dashboard.vue'),
   },
   {
     path: '/typography',
     name: 'typography',
+    beforeEnter,
     component: () => import('@/views/typography/Typography.vue'),
   },
   {
     path: '/icons',
     name: 'icons',
+    beforeEnter,
     component: () => import('@/views/icons/Icons.vue'),
   },
   {
     path: '/cards',
     name: 'cards',
+    beforeEnter,
     component: () => import('@/views/cards/Card.vue'),
   },
   {
     path: '/simple-table',
     name: 'simple-table',
+    beforeEnter,
     component: () => import('@/views/simple-table/SimpleTable.vue'),
   },
   {
     path: '/form-layouts',
     name: 'form-layouts',
+    beforeEnter,
     component: () => import('@/views/form-layouts/FormLayouts.vue'),
   },
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        next('/pages/login')
-      } else {
-        next()
-      }
-    },
+    beforeEnter,
     component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
   },
   {
     path: '/clients',
     name: 'clients',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        next('/pages/login')
-      } else {
-        next()
-      }
-    },
+    beforeEnter,
     component: () => import('@/views/clients/Clients.vue'),
   },
   {
     path: '/vehicles',
     name: 'vehicles',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        next('/pages/login')
-      } else {
-        next()
-      }
-    },
+    beforeEnter,
     component: () => import('@/views/vehicles/Vehicles.vue'),
   },
   {
