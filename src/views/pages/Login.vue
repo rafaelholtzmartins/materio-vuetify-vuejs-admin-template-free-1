@@ -32,12 +32,12 @@
 
         <!-- login form -->
         <v-card-text>
-          <v-form>
+          <v-form @submit="login">
             <v-text-field
               v-model="email"
               outlined
-              label="Email"
-              placeholder="john@example.com"
+              label="Login"
+              placeholder="nome.sobrenome ou nome@email.com"
               hide-details
               class="mb-3"
             ></v-text-field>
@@ -46,7 +46,7 @@
               v-model="password"
               outlined
               :type="isPasswordVisible ? 'text' : 'password'"
-              label="Password"
+              label="Senha"
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
               hide-details
@@ -54,23 +54,17 @@
             ></v-text-field>
 
             <div class="d-flex align-center justify-space-between flex-wrap">
-              <v-checkbox
-                label="Remember Me"
-                hide-details
-                class="me-3 mt-1"
-              >
-              </v-checkbox>
-
               <!-- forgot link -->
               <a
                 href="javascript:void(0)"
                 class="mt-1"
               >
-                Forgot Password?
+                Esqueceu a senha?
               </a>
             </div>
 
             <v-btn
+              type="submit"
               block
               color="primary"
               class="mt-6"
@@ -83,33 +77,12 @@
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
           <span class="me-2">
-            New on our platform?
+            Ainda não possui uma conta?
           </span>
           <router-link :to="{name:'pages-register'}">
-            Create an account
+            Crie sua conta
           </router-link>
         </v-card-text>
-
-        <!-- divider -->
-        <!-- <v-card-text class="d-flex align-center mt-2">
-          <v-divider></v-divider>
-          <span class="mx-5">or</span>
-          <v-divider></v-divider>
-        </v-card-text> -->
-
-        <!-- social links -->
-        <!-- <v-card-actions class="d-flex justify-center">
-          <v-btn
-            v-for="link in socialLink"
-            :key="link.icon"
-            icon
-            class="ms-1"
-          >
-            <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
-              {{ link.icon }}
-            </v-icon>
-          </v-btn>
-        </v-card-actions> -->
       </v-card>
     </div>
 
@@ -140,48 +113,40 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import { mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-import { ref } from '@vue/composition-api'
+import { /* mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, */ mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
+import router from '@/router'
 
 export default {
-  setup() {
-    const isPasswordVisible = ref(false)
-    const email = ref('')
-    const password = ref('')
-    const socialLink = [
-      {
-        icon: mdiFacebook,
-        color: '#4267b2',
-        colorInDark: '#4267b2',
-      },
-      {
-        icon: mdiTwitter,
-        color: '#1da1f2',
-        colorInDark: '#1da1f2',
-      },
-      {
-        icon: mdiGithub,
-        color: '#272727',
-        colorInDark: '#fff',
-      },
-      {
-        icon: mdiGoogle,
-        color: '#db4437',
-        colorInDark: '#db4437',
-      },
-    ]
-
+  data() {
     return {
-      isPasswordVisible,
-      email,
-      password,
-      socialLink,
+      isPasswordVisible: false,
+      email: '',
+      password: '',
 
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
       },
     }
+  },
+  methods: {
+    async login(e) {
+      e.preventDefault()
+      const user = { login: this.email, password: this.password }
+      const userJson = JSON.stringify(user)
+      await fetch('http://localhost:5000/user/login', {
+        method: 'POST',
+        headers: { 'content-Type': 'application/json' },
+        body: userJson,
+      }).then(response => response.json().then(data => ({
+        data,
+        status: response.status,
+      })).then(res => {
+        console.log(res.status, res.data, res.data)
+        localStorage.setItem('token', JSON.stringify(res.data.token))
+        router.push({ name: 'dashboard' })
+      }))
+    },
   },
 }
 </script>

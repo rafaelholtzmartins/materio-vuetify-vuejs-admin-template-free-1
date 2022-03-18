@@ -193,6 +193,7 @@ export default {
         console.log('preencha todos os dados')
       } else {
         const dataJson = JSON.stringify(dataCompany)
+        // eslint-disable-next-line no-unused-vars
         const req = await fetch('http://localhost:5000/company/create', {
           method: 'POST',
           headers: { 'content-Type': 'application/json' },
@@ -208,7 +209,7 @@ export default {
             // eslint-disable-next-line no-underscore-dangle
             const companyId = res.data.body._id
             this.createUser(companyId)
-            router.push({name: 'pages-login'})
+            router.push({ name: 'pages-login' })
           }
         }))
       }
