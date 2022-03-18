@@ -11,6 +11,14 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/pages/login')
+      } else {
+        next()
+      }
+    },
     component: () => import('@/views/dashboard/Dashboard.vue'),
   },
   {
@@ -46,6 +54,14 @@ const routes = [
   {
     path: '/pages/login',
     name: 'pages-login',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        next('/dashboard')
+      } else {
+        next()
+      }
+    },
     component: () => import('@/views/pages/Login.vue'),
     meta: {
       layout: 'blank',
@@ -54,6 +70,14 @@ const routes = [
   {
     path: '/pages/register',
     name: 'pages-register',
+    beforeEnter(_to, _from, next) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        next('/dashboard')
+      } else {
+        next()
+      }
+    },
     component: () => import('@/views/pages/Register.vue'),
     meta: {
       layout: 'blank',
@@ -69,7 +93,7 @@ const routes = [
   },
   {
     path: '*',
-    redirect: 'error-404',
+    redirect: 'dashboard',
   },
 ]
 
