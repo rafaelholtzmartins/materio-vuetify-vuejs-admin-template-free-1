@@ -54,14 +54,18 @@
       <v-divider></v-divider>
 
       <!-- Profile -->
-      <v-list-item link>
+      <v-list-item
+        link
+        title="Perfil"
+        :to="{ name: 'pages-account-settings'}"
+      >
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiAccountOutline }}
           </v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Profile</v-list-item-title>
+          <v-list-item-title>Perfil</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -139,7 +143,10 @@
       <v-divider class="my-2"></v-divider>
 
       <!-- Logout -->
-      <v-list-item link @click="logout">
+      <v-list-item
+        link
+        @click="logout"
+      >
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiLogoutVariant }}
@@ -164,7 +171,7 @@ import {
   mdiHelpCircleOutline,
   mdiLogoutVariant,
 } from '@mdi/js'
-import logout from '@/utils/logout';
+import logout from '@/utils/logout'
 
 export default {
   setup() {

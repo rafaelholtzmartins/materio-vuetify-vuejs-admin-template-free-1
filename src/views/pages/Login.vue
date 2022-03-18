@@ -134,6 +134,8 @@ export default {
       e.preventDefault()
       const user = { login: this.email, password: this.password }
       const userJson = JSON.stringify(user)
+      console.log('Login.vue > async login')
+      console.log(userJson)
       await fetch('http://localhost:5000/user/login', {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
@@ -142,9 +144,13 @@ export default {
         data,
         status: response.status,
       })).then(res => {
-        console.log(res.status, res.data, res.data)
-        localStorage.setItem('token', JSON.stringify(res.data.token))
-        router.push({ name: 'dashboard' })
+        console.log(res.status, res.data)
+        if (res.status === 422) {
+          console.log(res.data)
+        } else if (res.status === 200) {
+          localStorage.setItem('token', JSON.stringify(res.data.token))
+          router.push({ name: 'dashboard' })
+        }
       }))
     },
   },

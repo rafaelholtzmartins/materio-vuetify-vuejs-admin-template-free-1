@@ -43,11 +43,6 @@
         :icon="icons.mdiHomeOutline"
       ></nav-menu-link>
       <nav-menu-link
-        title="Account Settings"
-        :to="{ name: 'pages-account-settings'}"
-        :icon="icons.mdiAccountCogOutline"
-      ></nav-menu-link>
-      <nav-menu-link
         title="Clients"
         :to="{ name: 'clients'}"
         :icon="icons.mdiAccount"
