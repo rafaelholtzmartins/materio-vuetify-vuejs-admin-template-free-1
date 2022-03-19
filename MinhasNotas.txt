@@ -1,2 +1,5 @@
 Link de ícones
 https://materialdesignicons.com/
+
+Alerts
+https://vuetifyjs.com/en/components/alerts/#icon

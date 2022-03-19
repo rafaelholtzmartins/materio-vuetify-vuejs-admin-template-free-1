@@ -52,7 +52,13 @@
               hide-details
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
-
+            <v-alert
+              v-if="alert"
+              id="alert"
+              type="error"
+            >
+              {{ alert }}
+            </v-alert>
             <div class="d-flex align-center justify-space-between flex-wrap">
               <!-- forgot link -->
               <a
@@ -122,6 +128,7 @@ export default {
       isPasswordVisible: false,
       email: '',
       password: '',
+      alert: '',
 
       icons: {
         mdiEyeOutline,
@@ -133,9 +140,14 @@ export default {
     async login(e) {
       e.preventDefault()
       const user = { login: this.email, password: this.password }
+
+      if (!this.login || !this.password) {
+        this.alert = 'Informe login e senha'
+        // eslint-disable-next-line newline-before-return
+        return
+      }
+
       const userJson = JSON.stringify(user)
-      console.log('Login.vue > async login')
-      console.log(userJson)
       await fetch('http://localhost:5000/user/login', {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
@@ -144,8 +156,8 @@ export default {
         data,
         status: response.status,
       })).then(res => {
-        console.log(res.status, res.data)
         if (res.status === 422) {
+          this.alert = res.data.message
           console.log(res.data)
         } else if (res.status === 200) {
           localStorage.setItem('token', JSON.stringify(res.data.token))
@@ -159,4 +171,7 @@ export default {
 
 <style lang="scss">
 @import '~@/plugins/vuetify/default-preset/preset/pages/auth.scss';
+#alert{
+  margin-top: 10px;
+}
 </style>

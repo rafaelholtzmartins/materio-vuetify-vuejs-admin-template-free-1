@@ -81,7 +81,13 @@
               hide-details
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
-
+            <v-alert
+              v-if="alert"
+              id="alert"
+              type="error"
+            >
+              {{ alert }}
+            </v-alert>
             <v-btn
               type="submit"
               block
@@ -146,6 +152,7 @@ export default {
       password: null,
       company_id: null,
       isPasswordVisible: false,
+      alert: null,
 
       icons: {
         mdiEyeOutline,
@@ -157,6 +164,11 @@ export default {
     async createCompany(e) {
       e.preventDefault()
 
+      if (!this.companyName || !this.email || !this.phone || !this.name || !this.login || !this.password) {
+        this.alert = 'Informe todos os dados da empresa'
+        // eslint-disable-next-line newline-before-return
+        return
+      }
       const dataCompany = {
         companyName: this.companyName,
         email: this.email,
@@ -170,6 +182,7 @@ export default {
       }
 
       const userJson = JSON.stringify(user)
+      console.log(userJson)
       let userExist = null
       await fetch('http://localhost:5000/user/getuseremailoginphone', {
         method: 'POST',
@@ -179,40 +192,35 @@ export default {
         data,
         status: response.status,
       })).then(res => {
-        console.log(res.status, res.data.user)
-        userExist = res.data.user
+        userExist = res.data
       }))
       console.log(userExist)
-      if (userExist !== null) {
-        console.log('existe um usuário cadastrado')
+      if (userExist.user) {
+        this.alert = userExist
         // eslint-disable-next-line newline-before-return
         return
       }
 
-      if (!this.companyName || !this.email || !this.phone) {
-        console.log('preencha todos os dados')
-      } else {
-        const dataJson = JSON.stringify(dataCompany)
-        // eslint-disable-next-line no-unused-vars
-        const req = await fetch('http://localhost:5000/company/create', {
-          method: 'POST',
-          headers: { 'content-Type': 'application/json' },
-          body: dataJson,
-        }).then(response => response.json().then(data => ({
-          data,
-          status: response.status,
-        })).then(res => {
-          if (res.status === 422) {
-            console.log(res.data.message)
-          } else {
-            // console.log(res.status, res.data.body._id)
-            // eslint-disable-next-line no-underscore-dangle
-            const companyId = res.data.body._id
-            this.createUser(companyId)
-            router.push({ name: 'pages-login' })
-          }
-        }))
-      }
+      const dataJson = JSON.stringify(dataCompany)
+      // eslint-disable-next-line no-unused-vars
+      const req = await fetch('http://localhost:5000/company/create', {
+        method: 'POST',
+        headers: { 'content-Type': 'application/json' },
+        body: dataJson,
+      }).then(response => response.json().then(data => ({
+        data,
+        status: response.status,
+      })).then(res => {
+        if (res.status === 422) {
+          console.log(res.data.message)
+        } else {
+          // console.log(res.status, res.data.body._id)
+          // eslint-disable-next-line no-underscore-dangle
+          const companyId = res.data.body._id
+          this.createUser(companyId)
+          router.push({ name: 'pages-login' })
+        }
+      }))
     },
     async createUser(companyId) {
       console.log('create user')
@@ -247,4 +255,7 @@ export default {
 
 <style lang="scss">
 @import '~@/plugins/vuetify/default-preset/preset/pages/auth.scss';
+#alert{
+  margin-top: 10px;
+}
 </style>
