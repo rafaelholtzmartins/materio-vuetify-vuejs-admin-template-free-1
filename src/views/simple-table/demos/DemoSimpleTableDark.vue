@@ -1,5 +1,7 @@
 <template>
-  <v-simple-table dark>
+  <v-simple-table
+    dark
+  >
     <template v-slot:default>
       <thead>
         <tr>

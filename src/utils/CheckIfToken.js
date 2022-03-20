@@ -3,24 +3,23 @@ export default function beforeEnter(_to, _from, next) {
   if (!token) {
     next('/pages/login')
   } else {
-    const tokenJson = JSON.stringify({ token })
+    next()
+
+    /* const authString = `Bearer ${token}`
     fetch('http://localhost:5000/user/checkusertoken', {
       method: 'POST',
-      headers: { 'content-Type': 'application/json' },
-      body: tokenJson,
+      headers: { Authorization: authString },
     }).then(response => response.json().then(data => ({
       data,
       status: response.status,
     })).then(res => {
-      // console.log(/* res.status, res.data.message, */ res.data)
+      // console.log(/* res.status, res.data.message,  res.data)
       if (res.status === 400) {
         localStorage.clear()
         next('/pages/login')
-      } else if (res.status === 200) {
-        next()
       } else {
-        next('/pages/login')
+        next()
       }
-    }))
+    })) */
   }
 }

@@ -2,7 +2,6 @@ import router from '@/router/index'
 
 export default function logout() {
   const token = localStorage.getItem('token')
-  console.log(token)
   const tokenJson = JSON.stringify({ token })
   fetch('http://localhost:5000/user/logout', {
     method: 'POST',
