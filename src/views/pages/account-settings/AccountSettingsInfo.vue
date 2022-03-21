@@ -136,6 +136,7 @@
 
 <script>
 import { ref } from '@vue/composition-api'
+import beforeEnter from '@/utils/CheckIfToken'
 
 export default {
   props: {
@@ -153,5 +154,6 @@ export default {
 
     return { optionsLocal, resetForm }
   },
+  mounted() { beforeEnter() },
 }
 </script>

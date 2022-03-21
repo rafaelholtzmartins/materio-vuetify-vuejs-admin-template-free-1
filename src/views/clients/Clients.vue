@@ -31,7 +31,6 @@ export default {
   },
   mounted() {
     this.getClients()
-    console.log(`aqui ${this.url}`)
   },
   methods: {
     async getClients() {
@@ -41,7 +40,7 @@ export default {
       const tokenParse = JSON.parse(token)
       const authString = `Bearer ${tokenParse}`
       axios
-        .get('http://localhost:5000/client/get',
+        .get(`${VUE_APP_ROOT_API}/client/get`,
           { headers: { Authorization: authString } })
         .then(response => {
           console.log(response)

@@ -13,7 +13,6 @@
   </v-row>
 </template>
 <script>
-import axios from 'axios'
 import TableDark from '../simple-table/demos/DemoSimpleTableDark.vue'
 
 export default {
@@ -21,6 +20,5 @@ export default {
   components: {
     TableDark,
   },
-
 }
 </script>

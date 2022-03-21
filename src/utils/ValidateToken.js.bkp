@@ -1,0 +1,33 @@
+// eslint-disable-next-line import/no-cycle
+// import router from '@/router/index'
+import axios from 'axios'
+import router from '@/router'
+
+export default function validateToken(token, res) {
+  const authString = `Bearer ${token}`
+  console.log(authString)
+  axios
+    .get(`${process.env.VUE_APP_ROOT_API}/user/checkusertoken`,
+      {
+        headers: { Authorization: authString },
+        'Content-Type': 'multipart/form-data',
+      })
+    .then(response => {
+      console.log(response.data.message)
+
+      res.status(200).json({ response: response.data.message })
+
+      /* if (response.data.message === 'Sessão válida') {
+        return true
+      } else {
+        return false
+      } */
+    })
+    .catch(error => {
+      console.log('error')
+      console.log(error)
+      console.log(error.data)
+    })
+  /* console.log(`token é válido? ${tokenIsValid}`)
+  return true */
+}

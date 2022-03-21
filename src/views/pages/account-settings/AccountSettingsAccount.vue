@@ -174,6 +174,7 @@
 <script>
 import { mdiAlertOutline, mdiCloudUploadOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
+import beforeEnter from '@/utils/CheckIfToken'
 
 export default {
   props: {
@@ -201,5 +202,6 @@ export default {
       },
     }
   },
+  mounted() { beforeEnter() },
 }
 </script>

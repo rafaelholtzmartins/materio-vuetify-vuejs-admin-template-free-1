@@ -125,6 +125,7 @@
 // eslint-disable-next-line object-curly-newline
 import { mdiKeyOutline, mdiLockOpenOutline, mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
+import beforeEnter from '@/utils/CheckIfToken'
 
 export default {
   setup() {
@@ -150,6 +151,7 @@ export default {
       },
     }
   },
+  mounted() { beforeEnter() },
 }
 </script>
 

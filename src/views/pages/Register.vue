@@ -184,7 +184,7 @@ export default {
       const userJson = JSON.stringify(user)
       console.log(userJson)
       let userExist = null
-      await fetch('http://localhost:5000/user/getuseremailoginphone', {
+      await fetch(`${process.env.VUE_APP_ROOT_API}/user/getuseremailoginphone`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: userJson,
@@ -203,7 +203,7 @@ export default {
 
       const dataJson = JSON.stringify(dataCompany)
       // eslint-disable-next-line no-unused-vars
-      const req = await fetch('http://localhost:5000/company/create', {
+      const req = await fetch(`${process.env.VUE_APP_ROOT_API}/company/create`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: dataJson,
@@ -238,7 +238,7 @@ export default {
 
       const userJson = JSON.stringify(user)
 
-      await fetch('http://localhost:5000/user/create', {
+      await fetch(`${process.env.VUE_APP_ROOT_API}/user/create`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: userJson,

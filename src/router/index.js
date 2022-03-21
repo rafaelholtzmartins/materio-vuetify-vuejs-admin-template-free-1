@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import beforeEnter from '@/utils/CheckIfToken'
+import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -10,70 +10,8 @@ const routes = [
     redirect: 'pages-login',
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    beforeEnter,
-    component: () => import('@/views/dashboard/Dashboard.vue'),
-  },
-  {
-    path: '/typography',
-    name: 'typography',
-    beforeEnter,
-    component: () => import('@/views/typography/Typography.vue'),
-  },
-  {
-    path: '/icons',
-    name: 'icons',
-    beforeEnter,
-    component: () => import('@/views/icons/Icons.vue'),
-  },
-  {
-    path: '/cards',
-    name: 'cards',
-    beforeEnter,
-    component: () => import('@/views/cards/Card.vue'),
-  },
-  {
-    path: '/simple-table',
-    name: 'simple-table',
-    beforeEnter,
-    component: () => import('@/views/simple-table/SimpleTable.vue'),
-  },
-  {
-    path: '/form-layouts',
-    name: 'form-layouts',
-    beforeEnter,
-    component: () => import('@/views/form-layouts/FormLayouts.vue'),
-  },
-  {
-    path: '/pages/account-settings',
-    name: 'pages-account-settings',
-    beforeEnter,
-    component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
-  },
-  {
-    path: '/clients',
-    name: 'clients',
-    beforeEnter,
-    component: () => import('@/views/clients/Clients.vue'),
-  },
-  {
-    path: '/vehicles',
-    name: 'vehicles',
-    beforeEnter,
-    component: () => import('@/views/vehicles/Vehicles.vue'),
-  },
-  {
     path: '/pages/login',
     name: 'pages-login',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (token) {
-        next('/dashboard')
-      } else {
-        next()
-      }
-    },
     component: () => import('@/views/pages/Login.vue'),
     meta: {
       layout: 'blank',
@@ -82,18 +20,55 @@ const routes = [
   {
     path: '/pages/register',
     name: 'pages-register',
-    beforeEnter(_to, _from, next) {
-      const token = localStorage.getItem('token')
-      if (token) {
-        next('/dashboard')
-      } else {
-        next()
-      }
-    },
     component: () => import('@/views/pages/Register.vue'),
     meta: {
       layout: 'blank',
     },
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/views/dashboard/Dashboard.vue'),
+  },
+  {
+    path: '/typography',
+    name: 'typography',
+    component: () => import('@/views/typography/Typography.vue'),
+  },
+  {
+    path: '/icons',
+    name: 'icons',
+    component: () => import('@/views/icons/Icons.vue'),
+  },
+  {
+    path: '/cards',
+    name: 'cards',
+    component: () => import('@/views/cards/Card.vue'),
+  },
+  {
+    path: '/simple-table',
+    name: 'simple-table',
+    component: () => import('@/views/simple-table/SimpleTable.vue'),
+  },
+  {
+    path: '/form-layouts',
+    name: 'form-layouts',
+    component: () => import('@/views/form-layouts/FormLayouts.vue'),
+  },
+  {
+    path: '/pages/account-settings',
+    name: 'pages-account-settings',
+    component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
+  },
+  {
+    path: '/clients',
+    name: 'clients',
+    component: () => import('@/views/clients/Clients.vue'),
+  },
+  {
+    path: '/vehicles',
+    name: 'vehicles',
+    component: () => import('@/views/vehicles/Vehicles.vue'),
   },
   {
     path: '/error-404',
@@ -105,7 +80,7 @@ const routes = [
   },
   {
     path: '*',
-    redirect: 'dashboard',
+    redirect: '/pages/login',
   },
 ]
 
@@ -113,6 +88,46 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (localStorage.getItem('token') && (from.path === '/pages/login' && to.path === '/dashboard')) {
+    // console.log('tem token vem do login vai para dashboard')
+
+    next()
+  } else if (!localStorage.getItem('token') && (to.path !== '/pages/login' && to.path !== '/pages/register')) {
+    // console.log('não tem token e não é login ou register')
+    next('/pages/login')
+  } else if (localStorage.getItem('token') && (to.path !== '/pages/login' && to.path !== '/pages/register')) {
+    // console.log('tem token não é login e register')
+    const authString = `Bearer ${localStorage.getItem('token')}`
+    axios
+      .get(`${process.env.VUE_APP_ROOT_API}/user/checkusertoken`,
+        {
+          headers: { Authorization: authString },
+          'Content-Type': 'multipart/form-data',
+        })
+      .then(response => {
+        if (response.data.message === 'Sessão válida') {
+          // console.log(response.data.message)
+          next()
+        } else {
+          // console.log('Token inválido')
+          localStorage.clear()
+          next('/pages/login')
+        }
+      })
+      .catch(error => {
+        console.log('error')
+        console.log(error)
+        console.log(error.data)
+      })
+    next()
+  } else if (localStorage.getItem('token') && (to.path === '/pages/login' || to.path === '/pages/register')) {
+    // console.log('tem token e é login ou register ')
+    next('/dashboard')
+  }
+  next()
 })
 
 export default router

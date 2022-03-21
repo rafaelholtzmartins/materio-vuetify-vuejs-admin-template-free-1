@@ -148,7 +148,7 @@ export default {
       }
 
       const userJson = JSON.stringify(user)
-      await fetch('http://localhost:5000/user/login', {
+      await fetch(`${process.env.VUE_APP_ROOT_API}/user/login`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: userJson,
@@ -161,7 +161,8 @@ export default {
           console.log(res.data)
         } else if (res.status === 200) {
           localStorage.setItem('token', JSON.stringify(res.data.token))
-          router.push({ name: 'dashboard' })
+          setTimeout(() => { router.push({ name: 'dashboard' }) }, 1000)
+          //router.push({ name: 'dashboard' })
         }
       }))
     },
