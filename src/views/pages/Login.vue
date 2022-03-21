@@ -161,8 +161,7 @@ export default {
           console.log(res.data)
         } else if (res.status === 200) {
           localStorage.setItem('token', JSON.stringify(res.data.token))
-          setTimeout(() => { router.push({ name: 'dashboard' }) }, 1000)
-          //router.push({ name: 'dashboard' })
+          router.push({ name: 'dashboard' })
         }
       }))
     },
