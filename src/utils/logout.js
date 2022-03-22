@@ -3,7 +3,7 @@ import router from '@/router/index'
 export default function logout() {
   const token = localStorage.getItem('token')
   const tokenJson = JSON.stringify({ token })
-  fetch(`${process.env.VUE_APP_ROOT_API}/user/logout`, {
+  fetch(`${process.env.VUE_APP_ROOT_API}/session/logout`, {
     method: 'POST',
     headers: { 'content-Type': 'application/json' },
     body: tokenJson,

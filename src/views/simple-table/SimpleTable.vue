@@ -12,9 +12,9 @@
     <v-col cols="12">
       <v-card>
         <v-card-title>Dark</v-card-title>
-        <v-card-text>
+        <!-- <v-card-text>
           Use <code>dark</code> prop to switch table to the dark theme.
-        </v-card-text>
+        </v-card-text> -->
         <demo-simple-table-dark></demo-simple-table-dark>
       </v-card>
     </v-col>

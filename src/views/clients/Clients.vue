@@ -7,7 +7,7 @@
         <v-card-text>
           Use <code>dark</code> prop to switch table to the dark theme.
         </v-card-text>
-        <TableDark />
+        <ListClients />
       </v-card>
     </v-col>
   </v-row>
@@ -15,42 +15,12 @@
 <script>
 
 // import axios from 'axios'
-import clientsGetAll from '../../utils/ClientsGetAll'
-import TableDark from '../simple-table/demos/DemoSimpleTableDark.vue'
+import ListClients from './ListClients.vue'
 
 export default {
   name: 'Clients',
   components: {
-    TableDark,
-  },
-  data() {
-    return {
-      result: [],
-      url: process.env.VUE_APP_ROOT_API,
-    }
-  },
-  mounted() {
-    this.getClients()
-  },
-  methods: {
-    async getClients() {
-      clientsGetAll()
-
-      /* const token = localStorage.getItem('token')
-      const tokenParse = JSON.parse(token)
-      const authString = `Bearer ${tokenParse}`
-      axios
-        .get(`${VUE_APP_ROOT_API}/client/get`,
-          { headers: { Authorization: authString } })
-        .then(response => {
-          console.log(response)
-          this.result = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      console.log(this.result) */
-    },
+    ListClients,
   },
 }
 </script>

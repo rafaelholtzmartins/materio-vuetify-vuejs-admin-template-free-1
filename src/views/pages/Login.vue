@@ -148,7 +148,7 @@ export default {
       }
 
       const userJson = JSON.stringify(user)
-      await fetch(`${process.env.VUE_APP_ROOT_API}/user/login`, {
+      await fetch(`${process.env.VUE_APP_ROOT_API}/session/login`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: userJson,

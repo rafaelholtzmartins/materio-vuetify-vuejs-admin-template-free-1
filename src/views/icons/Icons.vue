@@ -90,6 +90,8 @@ import {
   mdiEmoticonHappyOutline,
   mdiFileMultipleOutline,
   mdiFlaskEmptyOutline,
+  mdiAccountPlus,
+  mdiCarArrowLeft,
 } from '@mdi/js'
 
 export default {
@@ -146,6 +148,8 @@ export default {
       { icon: mdiEmoticonHappyOutline, name: 'mdiEmoticonHappyOutline' },
       { icon: mdiFileMultipleOutline, name: 'mdiFileMultipleOutline' },
       { icon: mdiFlaskEmptyOutline, name: 'mdiFlaskEmptyOutline' },
+      { icon: mdiAccountPlus, name: 'mdiAccountPlus ' },
+      { icon: mdiCarArrowLeft, name: 'mdiCarArrowLeft ' },
     ]
 
     return {
