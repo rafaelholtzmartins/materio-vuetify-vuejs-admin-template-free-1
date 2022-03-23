@@ -88,6 +88,13 @@
             >
               {{ alert }}
             </v-alert>
+            <v-alert
+              v-if="ok"
+              id="alert"
+              type="success"
+            >
+              {{ ok }}
+            </v-alert>
             <v-btn
               type="submit"
               block
@@ -139,6 +146,7 @@
 <script>
 // eslint-disable-next-line object-curly-newline
 import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
+import axios from 'axios'
 import router from '@/router'
 
 export default {
@@ -153,7 +161,7 @@ export default {
       company_id: null,
       isPasswordVisible: false,
       alert: null,
-
+      ok: null,
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
@@ -169,85 +177,41 @@ export default {
         // eslint-disable-next-line newline-before-return
         return
       }
-      const dataCompany = {
+
+      const data = {
         companyName: this.companyName,
         email: this.email,
         phone: this.phone,
-      }
-
-      const user = {
-        login: this.login,
-        email: this.email,
-        phone: this.phone,
-      }
-
-      const userJson = JSON.stringify(user)
-      console.log(userJson)
-      let userExist = null
-      await fetch(`${process.env.VUE_APP_ROOT_API}/user/getuseremailoginphone`, {
-        method: 'POST',
-        headers: { 'content-Type': 'application/json' },
-        body: userJson,
-      }).then(response => response.json().then(data => ({
-        data,
-        status: response.status,
-      })).then(res => {
-        userExist = res.data
-      }))
-      console.log(userExist)
-      if (userExist.user) {
-        this.alert = userExist
-        // eslint-disable-next-line newline-before-return
-        return
-      }
-
-      const dataJson = JSON.stringify(dataCompany)
-      // eslint-disable-next-line no-unused-vars
-      const req = await fetch(`${process.env.VUE_APP_ROOT_API}/company/create`, {
-        method: 'POST',
-        headers: { 'content-Type': 'application/json' },
-        body: dataJson,
-      }).then(response => response.json().then(data => ({
-        data,
-        status: response.status,
-      })).then(res => {
-        if (res.status === 422) {
-          console.log(res.data.message)
-        } else {
-          // console.log(res.status, res.data.body._id)
-          // eslint-disable-next-line no-underscore-dangle
-          const companyId = res.data.body._id
-          this.createUser(companyId)
-          router.push({ name: 'pages-login' })
-        }
-      }))
-    },
-    async createUser(companyId) {
-      console.log('create user')
-
-      const user = {
         name: this.name,
-        email: this.email,
         login: this.login,
-        phone: this.phone,
-        whatsapp: this.whatsapp,
-        companyId,
         password: this.password,
-        master: true,
       }
 
-      const userJson = JSON.stringify(user)
-
-      await fetch(`${process.env.VUE_APP_ROOT_API}/user/create`, {
-        method: 'POST',
+      axios.post(`${process.env.VUE_APP_ROOT_API}/company/create`, data, {
         headers: { 'content-Type': 'application/json' },
-        body: userJson,
-      }).then(response => response.json().then(data => ({
-        data,
-        status: response.status,
-      })).then(res => {
-        console.log(res.status, res.data.body)
-      }))
+      // eslint-disable-next-line arrow-parens
+      }).then((response) => {
+        this.alert = null
+        this.ok = response.data.message
+        setTimeout(() => {
+          //router.push({ name: 'pages-login' })
+          const dataLogin = {
+            login: this.login,
+            password: this.password,
+          }
+          axios.post(`${process.env.VUE_APP_ROOT_API}/session/login`, dataLogin, {
+            headers: { 'content-Type': 'application/json' },
+          }).then((response) => {
+            localStorage.setItem('token', JSON.stringify(response.data.token))
+            router.push({ name: 'dashboard' })
+          })
+        }, 3000)
+        console.log(response.data.message)
+      // eslint-disable-next-line arrow-parens
+      }).catch((err) => {
+        console.log(err.response.data.message)
+        this.alert = err.response.data.message
+      })
     },
   },
 }

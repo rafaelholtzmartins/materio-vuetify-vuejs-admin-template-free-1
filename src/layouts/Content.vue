@@ -23,24 +23,49 @@
             class="app-bar-search flex-grow-0"
             hide-details
           ></v-text-field>
-          <v-btn
-            icon
-            small
-            class="ms-3"
-          >
-            <v-icon>
-              {{ icons.mdiAccountPlus }}
-            </v-icon>
-          </v-btn>Adicionar cliente
-          <v-btn
-            icon
-            small
-            class="ms-3"
-          >
-            <v-icon>
-              {{ icons.mdiCarArrowLeft }}
-            </v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                small
+                class="ms-3"
+              >
+                <v-icon
+                  class="ms-3"
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  {{ icons.mdiAccountPlus }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Novo cliente</span>
+          </v-tooltip>
+          
+          
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                small
+                class="ms-3"
+              >
+                <v-icon
+                  class="ms-3"
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  {{ icons.mdiCarArrowLeft }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Novo veículo</span>
+          </v-tooltip>
+
           <v-spacer></v-spacer>
 
           <!-- Right Content -->
@@ -125,6 +150,8 @@ export default {
 
 <style lang="scss" scoped>
 .v-app-bar ::v-deep {
+  /* position: fixed !important;
+  background-color: aliceblue !important; */
   .v-toolbar__content {
     padding: 0;
 
@@ -137,7 +164,7 @@ export default {
 }
 
 .boxed-container {
-  max-width: 1440px;
+  max-width: 2000px;
   margin-left: auto;
   margin-right: auto;
 }

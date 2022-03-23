@@ -43,12 +43,12 @@
         :icon="icons.mdiHomeOutline"
       ></nav-menu-link>
       <nav-menu-link
-        title="Clients"
+        title="Clientes"
         :to="{ name: 'clients'}"
         :icon="icons.mdiAccount"
       ></nav-menu-link>
       <nav-menu-link
-        title="vehicles"
+        title="Veículos"
         :to="{ name: 'vehicles'}"
         :icon="icons.mdiCarBack"
       ></nav-menu-link>

@@ -3,10 +3,7 @@
     <!-- dark -->
     <v-col cols="12">
       <v-card>
-        <v-card-title>Dark</v-card-title>
-        <v-card-text>
-          Use <code>dark</code> prop to switch table to the dark theme.
-        </v-card-text>
+        <v-card-title>Clientes</v-card-title>
         <ListClients />
       </v-card>
     </v-col>

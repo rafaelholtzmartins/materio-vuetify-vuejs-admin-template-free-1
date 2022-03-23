@@ -1,9 +1,6 @@
 <template>
   <v-simple-table
-    id="box-list"
     dark
-    height="425"
-    fixed-header
   >
     <template v-slot:default>
       <thead>
@@ -23,16 +20,15 @@
           <th class="text-center text-uppercase text--primary">
             CPF/CNPJ
           </th>
-          <th class="text-center text-uppercase text--primary">
-            Observações
-          </th>
         </tr>
       </thead>
 
       <tbody>
         <tr
           v-for="index in clientsList"
+          id="tr-hover"
           :key="index.clientsList"
+          @click="clientView(index._id)"
         >
           <td>{{ index.nome }}</td>
           <td class="text-center">
@@ -46,9 +42,6 @@
           </td>
           <td class="text-center">
             {{ index.cpf_cnpj }}
-          </td>
-          <td class="text-center">
-            {{ index.observacoes }}
           </td>
         </tr>
       </tbody>
@@ -94,11 +87,14 @@ export default {
           }
         })
     },
+    async clientView(id) {
+      router.push({ path: `/viewclient/:${id}` })
+    },
   },
 }
 </script>
 <style scoped>
-#box-list{
-  height:"420",
+#tr-hover{
+  cursor: pointer;
 }
 </style>

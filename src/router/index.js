@@ -31,6 +31,31 @@ const routes = [
     component: () => import('@/views/dashboard/Dashboard.vue'),
   },
   {
+    path: '/pages/account-settings',
+    name: 'pages-account-settings',
+    component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
+  },
+  {
+    path: '/clients',
+    name: 'clients',
+    component: () => import('@/views/clients/Clients.vue'),
+  },
+  {
+    path: '/viewclient/:id?',
+    name: 'view-client',
+    component: () => import('@/views/clients/ViewClient.vue'),
+  },
+  {
+    path: '/newclient',
+    name: 'new-client',
+    component: () => import('@/views/clients/NewClient.vue'),
+  },
+  {
+    path: '/vehicles',
+    name: 'vehicles',
+    component: () => import('@/views/vehicles/Vehicles.vue'),
+  },
+  {
     path: '/typography',
     name: 'typography',
     component: () => import('@/views/typography/Typography.vue'),
@@ -54,21 +79,6 @@ const routes = [
     path: '/form-layouts',
     name: 'form-layouts',
     component: () => import('@/views/form-layouts/FormLayouts.vue'),
-  },
-  {
-    path: '/pages/account-settings',
-    name: 'pages-account-settings',
-    component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
-  },
-  {
-    path: '/clients',
-    name: 'clients',
-    component: () => import('@/views/clients/Clients.vue'),
-  },
-  {
-    path: '/vehicles',
-    name: 'vehicles',
-    component: () => import('@/views/vehicles/Vehicles.vue'),
   },
   {
     path: '/error-404',
@@ -102,7 +112,7 @@ router.beforeEach((to, from, next) => {
     // console.log('tem token não é login e register')
     const authString = `Bearer ${localStorage.getItem('token')}`
     axios
-      .get(`${process.env.VUE_APP_ROOT_API}/user/checkusertoken`,
+      .get(`${process.env.VUE_APP_ROOT_API}/session/checksessiontoken`,
         {
           headers: { Authorization: authString },
           'Content-Type': 'multipart/form-data',

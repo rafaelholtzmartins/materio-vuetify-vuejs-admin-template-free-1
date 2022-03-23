@@ -59,6 +59,13 @@
             >
               {{ alert }}
             </v-alert>
+            <v-alert
+              v-if="ok"
+              id="alert"
+              type="success"
+            >
+              {{ ok }}
+            </v-alert>
             <div class="d-flex align-center justify-space-between flex-wrap">
               <!-- forgot link -->
               <a
@@ -120,6 +127,7 @@
 <script>
 // eslint-disable-next-line object-curly-newline
 import { /* mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, */ mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
+import axios from 'axios'
 import router from '@/router'
 
 export default {
@@ -128,7 +136,8 @@ export default {
       isPasswordVisible: false,
       email: '',
       password: '',
-      alert: '',
+      alert: null,
+      ok: null,
 
       icons: {
         mdiEyeOutline,
@@ -148,7 +157,23 @@ export default {
       }
 
       const userJson = JSON.stringify(user)
-      await fetch(`${process.env.VUE_APP_ROOT_API}/session/login`, {
+
+      axios.post(`${process.env.VUE_APP_ROOT_API}/session/login`, user, {
+        headers: { 'content-Type': 'application/json' },
+      }).then((response) => {
+        localStorage.setItem('token', JSON.stringify(response.data.token))
+        console.log(response)
+        this.ok = response.data.message
+        this.alert = null
+        setTimeout(() => {
+          router.push({ name: 'dashboard' })
+        }, 2000)
+      }).catch((err) => {
+        console.log(err.response.data.message)
+        this.alert = err.response.data.message
+      })
+
+      /* await fetch(`${process.env.VUE_APP_ROOT_API}/session/login`, {
         method: 'POST',
         headers: { 'content-Type': 'application/json' },
         body: userJson,
@@ -163,7 +188,7 @@ export default {
           localStorage.setItem('token', JSON.stringify(res.data.token))
           router.push({ name: 'dashboard' })
         }
-      }))
+      })) */
     },
   },
 }
